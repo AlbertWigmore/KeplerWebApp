@@ -85,12 +85,12 @@ class Command(BaseCommand):
             if satellite_cat[0].get(u'DECAY', None) is None:
                 launch = None
             else:
-                launch = datetime.strptime(satellite_cat[0].get(u'DECAY'), "%Y-%m-%d").replace(tzinfo=utc)
+                launch = datetime.strptime(satellite_cat[0].get(u'DECAY'), "%Y-%m-%d")
 
             if satellite_cat[0].get(u'LAUNCH', None) is None:
                 decay = None
             else:
-                decay = datetime.strptime(satellite_cat[0].get(u'LAUNCH', None), "%Y-%m-%d").replace(tzinfo=utc)
+                decay = datetime.strptime(satellite_cat[0].get(u'LAUNCH', None), "%Y-%m-%d")
 
             satellite_dict = {
                 'norad_id': (satellite_cat[0].get(u'NORAD_CAT_ID', None)),
@@ -144,6 +144,8 @@ class Command(BaseCommand):
         except ValueError as json_error:
                 print json_error
 
+        #print((satellite_tle[j].get(u'EPOCH', None)))
+
         j = 0
         for x in satellite_tle:
                 orbital_elements_dict = {
@@ -171,10 +173,7 @@ class Command(BaseCommand):
                 j += 1
 
                 try:
-                    OrbitalElements.objects.update_or_create(
-                        epoch=datetime.strptime(satellite_tle[j].get(u'EPOCH', None),
-                                                "%Y-%m-%d %H:%M:%S").replace(tzinfo=utc),
-                        defaults=orbital_elements_dict)
+                    OrbitalElements.objects.update_or_create(epoch=datetime.strptime(satellite_tle[j].get(u'EPOCH', None), "%Y-%m-%d %H:%M:%S"), defaults=orbital_elements_dict)
                 except OrbitalElements.DoesNotExist:
                     print OrbitalElements.DoesNotExist
 
