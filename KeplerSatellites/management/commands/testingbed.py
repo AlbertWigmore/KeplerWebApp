@@ -5,7 +5,6 @@ import httplib
 from django.core.serializers.json import DjangoJSONEncoder
 from KeplerSatellites.models import *
 from django.conf import settings
-from django.utils.timezone import utc
 
 class Command(BaseCommand):
     def country(self):
