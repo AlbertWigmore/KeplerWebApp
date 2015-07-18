@@ -8,7 +8,7 @@ class OrbitalElements(models.Model):
     apogee = models.FloatField(blank=True, null=True)
     perigee = models.FloatField(blank=True, null=True)
     RAAN = models.FloatField(blank=True, null=True)
-    eccentricity = models.IntegerField(blank=True, null=True)
+    eccentricity = models.FloatField(blank=True, null=True)
     argument_of_perigee = models.FloatField(blank=True, null=True)
     object_type = models.CharField(max_length=20, blank=True, null=True)
     mean_anomaly = models.FloatField(blank=True, null=True)
