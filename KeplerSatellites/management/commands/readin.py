@@ -56,8 +56,7 @@ class Command(BaseCommand):
             print country_dict
 
             try:
-                Country.objects.update_or_create(name=(boxscore[j].get(u'COUNTRY', None)).encode('utf-8').strip(),
-                                                 defaults=country_dict)
+                Country.objects.update_or_create(name=(boxscore[j].get(u'COUNTRY', None)), defaults=country_dict)
             except Country.DoesNotExist:
                 print Country.DoesNotExist
             j += 1
