@@ -23,11 +23,11 @@ class Command(BaseCommand):
                "limit/1/metadata/false"
 
         # Returns tle data for norad id, used for orbital elements
-        test2 = "https://www.space-track.org/basicspacedata/query/class/tle/NORAD_CAT_ID/5/metadata/false/distinct/true"
+        test2 = "https://www.space-track.org/basicspacedata/query/class/tle/NORAD_CAT_ID/9/metadata/false/distinct/true"
 
         # Returns data from satcat for norad id, only used for launch data
         test3 = "https://www.space-track.org/basicspacedata/query/class/satcat/NORAD_CAT_ID/" \
-               "5/metadata/false"
+               "9/metadata/false"
 
         country_query = "https://www.space-track.org/basicspacedata/query/class/boxscore/"
         jsonquery = {'identity': settings.USERNAME, 'password': settings.PASSWORD, 'query': test3}
@@ -120,6 +120,7 @@ class Command(BaseCommand):
         try:
             satellite_foreign_key = Satellite.objects.update_or_create(
                 norad_id=(satellite_cat[0].get(u'NORAD_CAT_ID', None)), defaults=satellite_dict)
+            print "Satellite Added"
         except Satellite.DoesNotExist:
             satellite_foreign_key = None
             print Satellite.DoesNotExist
@@ -143,7 +144,7 @@ class Command(BaseCommand):
         except ValueError as json_error:
                 print json_error
 
-        #print((satellite_tle[j].get(u'EPOCH', None)))
+        print satellite_foreign_key
 
         j = 0
         for x in satellite_tle:
@@ -173,6 +174,7 @@ class Command(BaseCommand):
 
                 try:
                     OrbitalElements.objects.update_or_create(epoch=datetime.strptime(satellite_tle[j].get(u'EPOCH', None), "%Y-%m-%d %H:%M:%S"), defaults=orbital_elements_dict)
+                    print "Orbital Elements Added"
                 except OrbitalElements.DoesNotExist:
                     print OrbitalElements.DoesNotExist
 
