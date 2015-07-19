@@ -17,9 +17,10 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from views import satellite_id
 from views import country_name
+from views import orbital_elements
 
 urlpatterns = [
     url(r'^satellite/(?P<id>[0-9]*)/$', satellite_id),
     url(r'^country/(?P<name_id>.*)/$', country_name),
-
+    url(r'^orbitalelements/(?P<id>.*)/$', orbital_elements),
 ]
