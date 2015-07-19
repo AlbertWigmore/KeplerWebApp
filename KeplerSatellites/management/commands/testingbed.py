@@ -7,18 +7,13 @@ from KeplerSatellites.models import *
 from django.conf import settings
 
 class Command(BaseCommand):
-    def country(self):
-        pass
-
-    def satellite(self):
-        pass
 
     def handle(self, *args, **options):
 
         base = "www.space-track.org"
         auth = "/ajaxauth/login"
 
-        norad_id_list = range(30, 30000, 1)
+        norad_id_list = range(1, 30000, 1)
         print norad_id_list
         for norad_id in norad_id_list:
             # Returns tle data for norad id, used for orbital elements
@@ -86,7 +81,6 @@ class Command(BaseCommand):
                     decay = None
                 else:
                     decay = datetime.strptime(satellite_cat[0].get(u'LAUNCH', None), "%Y-%m-%d")
-
                 satellite_dict = {
                     'norad_id': (satellite_cat[0].get(u'NORAD_CAT_ID', None)),
                     'sat_name': (satellite_cat[0].get(u'SATNAME', None)),
@@ -141,33 +135,32 @@ class Command(BaseCommand):
 
             j = 0
             for x in satellite_tle:
-                    orbital_elements_dict = {
-                        'period': (satellite_tle[j].get(u'PERIOD', None)),
-                        'inclination': (satellite_tle[j].get(u'INCLINATION', None)),
-                        'apogee': (satellite_tle[j].get(u'APOGEE', None)),
-                        'perigee': (satellite_tle[j].get(u'PERIGEE', None)),
-                        'RAAN': (satellite_tle[j].get(u'RA_OF_ASC_NODE', None)),
-                        'eccentricity': (satellite_tle[j].get(u'ECCENTRICITY', None)),
-                        'argument_of_perigee': (satellite_tle[j].get(u'ARG_OF_PERICENTER', None)),
-                        'object_type': (satellite_tle[j].get(u'OBJECT_TYPE', None)),
-                        'mean_anomaly': (satellite_tle[j].get(u'MEAN_ANOMALY', None)),
-                        'mean_motion': (satellite_tle[j].get(u'MEAN_MOTION', None)),
-                        'rev_number_at_epoch': (satellite_tle[j].get(u'REV_AT_EPOCH', None)),
-                        'first_derivative_of_mean_motion': (satellite_tle[j].get(u'MEAN_MOTION_DOT', None)),
-                        'second_derivative_of_mean_motion': (satellite_tle[j].get(u'MEAN_MOTION_DDOT', None)),
-                        'b_drag_term': (satellite_tle[j].get(u'BSTAR', None)),
-                        'element_set_epoch': (satellite_tle[j].get(u'ELEMENT_SET_NO', None)),
-                        'tle_line_1': (satellite_tle[j].get(u'TLE_LINE1', None)),
-                        'tle_line_2': (satellite_tle[j].get(u'TLE_LINE2', None)),
-                        'epoch': datetime.strptime(satellite_tle[j].get(u'EPOCH', None), "%Y-%m-%d %H:%M:%S"),
-                        'epoch_microsecond': (satellite_tle[j].get(u'EPOCH_MICROSECONDS', None)),
-                        'satellite': satellite_foreign_key[0],
-                    }
+                orbital_elements_dict = {
+                    'period': (satellite_tle[j].get(u'PERIOD', None)),
+                    'inclination': (satellite_tle[j].get(u'INCLINATION', None)),
+                    'apogee': (satellite_tle[j].get(u'APOGEE', None)),
+                    'perigee': (satellite_tle[j].get(u'PERIGEE', None)),
+                    'RAAN': (satellite_tle[j].get(u'RA_OF_ASC_NODE', None)),
+                    'eccentricity': (satellite_tle[j].get(u'ECCENTRICITY', None)),
+                    'argument_of_perigee': (satellite_tle[j].get(u'ARG_OF_PERICENTER', None)),
+                    'object_type': (satellite_tle[j].get(u'OBJECT_TYPE', None)),
+                    'mean_anomaly': (satellite_tle[j].get(u'MEAN_ANOMALY', None)),
+                    'mean_motion': (satellite_tle[j].get(u'MEAN_MOTION', None)),
+                    'rev_number_at_epoch': (satellite_tle[j].get(u'REV_AT_EPOCH', None)),
+                    'first_derivative_of_mean_motion': (satellite_tle[j].get(u'MEAN_MOTION_DOT', None)),
+                    'second_derivative_of_mean_motion': (satellite_tle[j].get(u'MEAN_MOTION_DDOT', None)),
+                    'b_drag_term': (satellite_tle[j].get(u'BSTAR', None)),
+                    'element_set_epoch': (satellite_tle[j].get(u'ELEMENT_SET_NO', None)),
+                    'tle_line_1': (satellite_tle[j].get(u'TLE_LINE1', None)),
+                    'tle_line_2': (satellite_tle[j].get(u'TLE_LINE2', None)),
+                    'epoch': datetime.strptime(satellite_tle[j].get(u'EPOCH', None), "%Y-%m-%d %H:%M:%S"),
+                    'epoch_microsecond': (satellite_tle[j].get(u'EPOCH_MICROSECONDS', None)),
+                    'satellite': satellite_foreign_key[0],
+                }
 
-                    try:
-                        OrbitalElements.objects.update_or_create(epoch=datetime.strptime(satellite_tle[j].get(u'EPOCH', None), "%Y-%m-%d %H:%M:%S"), defaults=orbital_elements_dict)
-                        print "Orbital Elements Added " + str(j)
-                    except OrbitalElements.DoesNotExist:
-                        print OrbitalElements.DoesNotExist
-                    j += 1
-
+                try:
+                    OrbitalElements.objects.update_or_create(epoch=datetime.strptime(satellite_tle[j].get(u'EPOCH', None), "%Y-%m-%d %H:%M:%S"), defaults=orbital_elements_dict)
+                    print "Orbital Elements Added " + str(j)
+                except OrbitalElements.DoesNotExist:
+                    print OrbitalElements.DoesNotExist
+                j += 1

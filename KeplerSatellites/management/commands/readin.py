@@ -7,11 +7,6 @@ from KeplerSatellites.models import *
 from django.conf import settings
 
 class Command(BaseCommand):
-    def country(self):
-        pass
-
-    def satellite(self):
-        pass
 
     def handle(self, *args, **options):
 
