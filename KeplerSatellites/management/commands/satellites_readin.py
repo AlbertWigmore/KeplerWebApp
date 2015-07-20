@@ -13,7 +13,7 @@ class Command(BaseCommand):
         base = "www.space-track.org"
         auth = "/ajaxauth/login"
 
-        norad_id_list = range(95, 30000, 1)
+        norad_id_list = range(130, 40000, 1)
         print norad_id_list
         for norad_id in norad_id_list:
             # Returns tle data for norad id, used for orbital elements
