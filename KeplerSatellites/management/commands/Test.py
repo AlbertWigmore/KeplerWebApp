@@ -1,14 +1,13 @@
 from django.core.management.base import BaseCommand
 from datetime import datetime
 from KeplerSatellites.models import *
-from query import spacetrack_query, norad_id_query
+from query import spacetrack_query
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        norad_id_list = norad_id_query()
-        print norad_id_list
+        norad_id_list = range(107, 40000, 1)
         for norad_id in norad_id_list:
 
             site_dict = {
@@ -44,9 +43,14 @@ class Command(BaseCommand):
                 'YUN':	 "Yunsong, DPRK",
                 None:    None,
             }
-            #INSERT QUERY FUNCTION
             satellite_cat = spacetrack_query("https://www.space-track.org/basicspacedata/query/class/satcat/NORAD_CAT_ID/"+str(norad_id)+"/metadata/false")
+            print "Satellite Acquired"
+            '''
+            if satellite_cat is None:
+                with open('save.csv', 'rw'):
 
+                break
+            '''
             if satellite_cat[0].get(u'DECAY', None) is None:
                 launch = None
             else:
@@ -87,11 +91,7 @@ class Command(BaseCommand):
 
             # INSERT QUERY
             satellite_tle = spacetrack_query("https://www.space-track.org/basicspacedata/query/class/tle/NORAD_CAT_ID/"+str(norad_id)+"/metadata/false/distinct/true")
-
-            if satellite_tle is None:
-
-                break
-
+            print "Orbital Elements Acquired"
             bulk_data = []
             j = 0
             for x in satellite_tle:
@@ -117,7 +117,7 @@ class Command(BaseCommand):
                     epoch_microsecond=(satellite_tle[j].get(u'EPOCH_MICROSECONDS', None)),
                     satellite=satellite_foreign_key[0],
                 ))
-                print "Orbital Element "+str(j)+" Added"
+                #print "Orbital Element "+str(j)+" Added"
                 j += 1
             try:
                 OrbitalElements.objects.bulk_create(bulk_data)

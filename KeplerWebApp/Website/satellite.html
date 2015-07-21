@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:margin="http://www.w3.org/1999/xhtml">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Kepler</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+	<!-- Font Awesome -->
+	<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+<head>
+</head>
+<body>
+
+<div class="container-fluid">
+    <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="#">Kepler</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav">
+                    <li><a href="#">Satellites</a></li>
+                    <li><a href="#">Countries</a></li>
+                    <li><a href="#">Map</a></li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">About</a></li>
+                  </ul>
+                </div>
+            </div>
+        </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="mid col-md-12">
+                <h1 class="satellite"> Vanguard 1 </h1>
+                <h2> United States - Air Force East Test Range - 1958/01/17</h2>
+                <h3 data-toggle="modal" data-target=".bs-example-modal-lg"> Orbital Elements </h3>
+
+                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <p> Orbital Elements for the Satellite </p>
+                          <table class="table">
+                              <ul class="list-group table_font">
+                                  <li class="list-group-item">Inclination</li>
+                                  <li class="list-group-item">Right Ascension of the Ascending Node</li>
+                                  <li class="list-group-item">Eccentricity</li>
+                                  <li class="list-group-item">Arguement of Perigee</li>
+                                  <li class="list-group-item">Mean Anomaly</li>
+                                  <li class="list-group-item">Mean Motion</li>
+                                  <li class="list-group-item">Revolution Number at Epoch</li>
+                                  <li class="list-group-item">First Derivative of the Mean Motion with respect to time</li>
+                                  <li class="list-group-item">Second Derivative of the Mean Motion with respect to time</li>
+                                  <li class="list-group-item">B Drag Term</li>
+                              </ul>
+                          </table>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </header>
+
+</body>
+</html>

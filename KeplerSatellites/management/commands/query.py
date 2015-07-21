@@ -2,14 +2,15 @@ import httplib
 from django.core.serializers.json import DjangoJSONEncoder
 from django.conf import settings
 import json
+import csv
+import sys
 
-
-def query(spacetrack_query):
+def spacetrack_query(query):
 
     base = "www.space-track.org"
     auth = "/ajaxauth/login"
 
-    json_query = {'identity': settings.USERNAME, 'password': settings.PASSWORD, 'query': spacetrack_query}
+    json_query = {'identity': settings.USERNAME, 'password': settings.PASSWORD, 'query': query}
     headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
 
     conn = httplib.HTTPSConnection(base)

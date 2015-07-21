@@ -51,7 +51,3 @@ Temporary Items
 .idea
 settings.py
 db.sqlite3
-
-# Website Folder
-
-/KeplerWebApp/Website/*
