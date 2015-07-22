@@ -62,15 +62,15 @@ class Command(BaseCommand):
                 k = 0
                 for x in satellite_cat:
                     if str(satellite_cat[k].get(u'CURRENT', None)) == 'Y':
-                        if satellite_cat[k].get(u'DECAY', None) is None:
+                        if satellite_cat[k].get(u'LAUNCH', None) is None:
                             launch = None
                         else:
-                            launch = datetime.strptime(satellite_cat[k].get(u'DECAY'), "%Y-%m-%d")
+                            launch = datetime.strptime(satellite_cat[k].get(u'LAUNCH'), "%Y-%m-%d")
 
-                        if satellite_cat[k].get(u'LAUNCH', None) is None:
+                        if satellite_cat[k].get(u'DECAY', None) is None:
                             decay = None
                         else:
-                            decay = datetime.strptime(satellite_cat[k].get(u'LAUNCH', None), "%Y-%m-%d")
+                            decay = datetime.strptime(satellite_cat[k].get(u'DECAY', None), "%Y-%m-%d")
                         if satellite_cat[k].get(u'COUNTRY', None) is None:
                             country = None
                         else:
