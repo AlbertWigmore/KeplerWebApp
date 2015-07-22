@@ -71,9 +71,10 @@ class Command(BaseCommand):
                             decay = None
                         else:
                             decay = datetime.strptime(satellite_cat[k].get(u'LAUNCH', None), "%Y-%m-%d")
-
-                        country = Country.objects.filter(name_id=satellite_cat[k].get(u'COUNTRY'))
-
+                        if satellite_cat[k].get(u'COUNTRY', None) is None:
+                            country = None
+                        else:
+                            country = Country.objects.filter(name_id=satellite_cat[k].get(u'COUNTRY'))
                         satellite_dict = {
                             'norad_id': (satellite_cat[k].get(u'NORAD_CAT_ID', None)),
                             'sat_name': (satellite_cat[k].get(u'SATNAME', None)),
