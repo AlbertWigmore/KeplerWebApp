@@ -2,8 +2,6 @@ import httplib
 from django.core.serializers.json import DjangoJSONEncoder
 from django.conf import settings
 import json
-import csv
-import sys
 
 def spacetrack_query(query):
 

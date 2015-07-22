@@ -60,6 +60,7 @@ class Satellite(models.Model):
     current = models.CharField(max_length=2, blank=True, null=True)
     comment = models.CharField(max_length=80, blank=True, null=True)
     originator = models.CharField(max_length=20, blank=True, null=True)
+    failed = models.BooleanField(default=True)
 
     country = models.ForeignKey("Country", blank=True, null=True)
 

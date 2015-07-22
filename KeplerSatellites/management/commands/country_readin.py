@@ -1,35 +1,15 @@
 from django.core.management.base import BaseCommand
-from datetime import datetime
 import json
 import httplib
 from django.core.serializers.json import DjangoJSONEncoder
 from KeplerSatellites.models import *
 from django.conf import settings
+from query import spacetrack_query
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-
-        base = "www.space-track.org"
-        auth = "/ajaxauth/login"
-        satellite_query = "https://www.space-track.org/basicspacedata/" \
-                 "query/class/tle/NORAD_CAT_ID/25544/orderby/EPOCH desc/" \
-                 "limit/22/"
-        country_query = "https://www.space-track.org/basicspacedata/query/class/boxscore/"
-        jsonquery = {'identity': settings.username, 'password': settings.password, 'query': country_query}
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-
-        conn = httplib.HTTPSConnection(base)
-        conn.request("POST", auth, json.dumps(jsonquery, cls=DjangoJSONEncoder), headers)
-
-        try:
-            response = conn.getresponse()
-            boxscore_json = response.read()
-        except:
-            pass
-
-        conn.close()
-        boxscore = json.loads(boxscore_json)
+        boxscore = spacetrack_query("https://www.space-track.org/basicspacedata/query/class/boxscore/")
 
         j = 0
         for x in boxscore:
@@ -47,8 +27,6 @@ class Command(BaseCommand):
                 'decayed_total': (boxscore[j].get(u'DECAYED_TOTAL_COUNT', None)),
                 'total': int(float((boxscore[j].get(u'DECAYED_TOTAL_COUNT', None))) +
                              float((boxscore[j].get(u'ORBITAL_TOTAL_COUNT', None))))}
-
-            print country_dict
 
             try:
                 Country.objects.update_or_create(name=(boxscore[j].get(u'COUNTRY', None)), defaults=country_dict)
