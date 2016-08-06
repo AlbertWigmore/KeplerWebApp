@@ -51,3 +51,9 @@ Temporary Items
 .idea
 settings.py
 db.sqlite3
+
+# Other
+*/migrations/
+*/static/
+*/website/
+*/templates/

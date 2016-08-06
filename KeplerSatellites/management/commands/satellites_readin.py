@@ -1,13 +1,16 @@
 from django.core.management.base import BaseCommand
 from datetime import datetime
 from KeplerSatellites.models import *
-from query import spacetrack_query
+# from query import spacetrack_query
+from query import Query
 import time
+
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-
+        query_object = Query()
+        query_object.login()
         norad_id_list = []
         created = Satellite.objects.filter(failed=True).values()
         for x in created:
@@ -48,8 +51,11 @@ class Command(BaseCommand):
                 'YUN':	 "Yunsong, DPRK",
                 None:    None,
             }
-            satellite_cat = spacetrack_query("https://www.space-track.org/basicspacedata/query/class/satcat/NORAD_CAT_ID/"+str(norad_id)+"/metadata/false")
-            satellite_tle = spacetrack_query("https://www.space-track.org/basicspacedata/query/class/tle/NORAD_CAT_ID/"+str(norad_id)+"/metadata/false/distinct/true")
+            # satellite_cat = spacetrack_query("https://www.space-track.org/basicspacedata/query/class/satcat/NORAD_CAT_ID/"+str(norad_id)+"/metadata/false")
+            # satellite_tle = spacetrack_query("https://www.space-track.org/basicspacedata/query/class/tle/NORAD_CAT_ID/"+str(norad_id)+"/orderby/EPOCH%20desc/limit/1/metadata/false/distinct/true")
+
+            satellite_cat = query_object.query(norad_id, "satcat")
+            satellite_tle = query_object.query(norad_id, "tle")
 
             print "Data Requests Done"
 
@@ -61,7 +67,7 @@ class Command(BaseCommand):
             else:
                 k = 0
                 for x in satellite_cat:
-                    if str(satellite_cat[k].get(u'CURRENT', None)) == 'Y':
+                    if str(satellite_cat[k].get(u'CURRENT', None)) == "Y":
                         if satellite_cat[k].get(u'LAUNCH', None) is None:
                             launch = None
                         else:
@@ -139,3 +145,4 @@ class Command(BaseCommand):
                     print "Orbital Elements Created"
                 except OrbitalElements.DoesNotExist:
                     print OrbitalElements.DoesNotExist
+        query_object.logout()

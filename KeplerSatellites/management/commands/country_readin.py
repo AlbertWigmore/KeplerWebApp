@@ -1,21 +1,25 @@
 from django.core.management.base import BaseCommand
-import json
-import httplib
-from django.core.serializers.json import DjangoJSONEncoder
+# import json
+# import httplib
+# from django.core.serializers.json import DjangoJSONEncoder
 from KeplerSatellites.models import *
-from django.conf import settings
-from query import spacetrack_query
+# from django.conf import settings
+# from query import spacetrack_query
+from query import Query
+
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        boxscore = spacetrack_query("https://www.space-track.org/basicspacedata/query/class/boxscore/")
-
+        query_object = Query()
+        query_object.login()
+        boxscore = query_object.query(None, "boxscore")
+        query_object.logout()
         j = 0
         for x in boxscore:
             country_dict = {
                 'name': (boxscore[j].get(u'COUNTRY', None)),
-                'name_id': (boxscore[j].get(u'SPADOC_CD',None)),
+                'name_id': (boxscore[j].get(u'SPADOC_CD', None)),
                 'in_orbit_unassigned': (boxscore[j].get(u'ORBITAL_UNASSIGNED', None)),
                 'in_orbit_rocket': (boxscore[j].get(u'ORBITAL_ROCKET_BODY_COUNT', None)),
                 'in_orbit_payload': (boxscore[j].get(u'ORBITAL_PAYLOAD_COUNT', None)),
@@ -33,4 +37,3 @@ class Command(BaseCommand):
             except Country.DoesNotExist:
                 print Country.DoesNotExist
             j += 1
-

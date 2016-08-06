@@ -20,4 +20,6 @@ import KeplerSatellites.urls
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(KeplerSatellites.urls)),
+    url(r'^', include(KeplerSatellites.urls)),
 ]
+

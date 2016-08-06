@@ -41,6 +41,7 @@ class Country(models.Model):
     decayed_total = models.IntegerField(blank=True, null=True)
     total = models.IntegerField(blank=True, null=True)
 
+
 class Satellite(models.Model):
 
     norad_id = models.IntegerField(blank=True, null=True)
@@ -63,6 +64,7 @@ class Satellite(models.Model):
     failed = models.BooleanField(default=True)
 
     country = models.ForeignKey("Country", blank=True, null=True)
+
 
 class LastCheck(models.Model):
     time = models.DateTimeField(blank=True, null=True)
