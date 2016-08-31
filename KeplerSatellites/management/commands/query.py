@@ -3,7 +3,7 @@
 # from django.conf import settings
 import json
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 
 
@@ -23,6 +23,7 @@ class Query:
         self.data_acquired = 0
         self.max_data_rate = 6250 * 0.9  # 50kbps times a multiplier for headers
         self.time_initial = datetime.now()
+        self.query_times = [datetime.now() - timedelta(minutes=1)] * 20
 
     def login(self):
         url = self.url_base + self.url_login
@@ -49,9 +50,18 @@ class Query:
             url = self.url_request_box_score
         else:
             return None
-        r = requests.get(url, headers=self.headers, cookies=self.cookie)
 
-        print r.status_code
+        # 20 request per minute API throttling requirement
+        sleep_time = 60 - (datetime.now() - self.query_times.pop(0)).total_seconds()
+        if sleep_time > 0:
+            print sleep_time
+            time.sleep(sleep_time)
+            print "slept"
+
+        try:
+            r = requests.get(url, headers=self.headers, cookies=self.cookie)
+        finally:
+            self.query_times.append(datetime.now())
 
         if r.status_code == 401:
             url_cookie = self.url_base + self.url_login
@@ -62,52 +72,16 @@ class Query:
                 print("error:", "login", r.text)
             r = requests.get(url, headers=self.headers, cookies=self.cookie)
 
+        # Data rate of 50kbps requirement
         self.data_acquired += len(r.text)
-
         if (self.data_acquired / ((datetime.now() - self.time_initial).total_seconds())) > self.max_data_rate:
             time.sleep(int((self.data_acquired / self.max_data_rate) -
                        (datetime.now() - self.time_initial).total_seconds()))
 
-        try:
-            json_dict = json.loads(r.text)
-        except ValueError as json_error:
-            json_dict = None
-            print json_error
+
+        if r.status_code != 200:
+            raise IOError("Invalid Server Response, Status Code: %i" % r.status_code)
+
+        json_dict = json.loads(r.text)
 
         return json_dict
-
-'''
-if __name__ == '__main__':
-    c = Query()
-    c.open()
-    tle = c.query(50, "tle")
-    tle = c.query(51, "tle")
-    tle = c.query(52, "tle")
-    c.close()
-'''
-'''
-        base = "www.space-track.org"
-        auth = "/ajaxauth/login"
-
-        json_query = {'identity': settings.USERNAME, 'password': settings.PASSWORD, 'query': query}
-        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
-
-        conn = httplib.HTTPSConnection(base)
-        conn.request("POST", auth, json.dumps(json_query, cls=DjangoJSONEncoder), headers)
-
-        try:
-            response = conn.getresponse()
-            json_response = response.read()
-        except:
-            json_response = None
-
-        try:
-            json_dict = json.loads(json_response)
-        except ValueError as json_error:
-            json_dict = None
-            print json_error
-
-        conn.close()
-
-        return json_dict
-'''

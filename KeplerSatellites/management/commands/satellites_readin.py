@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 from datetime import datetime
 from KeplerSatellites.models import *
-# from query import spacetrack_query
 from query import Query
 import time
 
@@ -13,11 +12,13 @@ class Command(BaseCommand):
         query_object.login()
         norad_id_list = []
         created = Satellite.objects.filter(failed=True).values()
+
         for x in created:
             norad_id_list.append(x["norad_id"])
 
-        for norad_id in norad_id_list:
-
+        # for norad_id in norad_id_list:
+        for norad_id in range(17197, 41751):
+            # norad_id = 41753
             site_dict = {
                 'AFETR': "Air Force Eastern Test Range",
                 'AFWTR': "Air Force Western Test Range",
@@ -51,18 +52,16 @@ class Command(BaseCommand):
                 'YUN':	 "Yunsong, DPRK",
                 None:    None,
             }
-            # satellite_cat = spacetrack_query("https://www.space-track.org/basicspacedata/query/class/satcat/NORAD_CAT_ID/"+str(norad_id)+"/metadata/false")
-            # satellite_tle = spacetrack_query("https://www.space-track.org/basicspacedata/query/class/tle/NORAD_CAT_ID/"+str(norad_id)+"/orderby/EPOCH%20desc/limit/1/metadata/false/distinct/true")
 
-            satellite_cat = query_object.query(norad_id, "satcat")
-            satellite_tle = query_object.query(norad_id, "tle")
-
-            print "Data Requests Done"
-
-            if satellite_cat is None or satellite_tle is None:
-                Satellite.objects.update_or_create(norad_id=norad_id, failed=True)
-                print "Space-Track Returned None, Waiting Ten Seconds for Next Query"
-                time.sleep(10)
+            try:
+                satellite_cat = query_object.query(norad_id, "satcat")
+                satellite_tle = query_object.query(norad_id, "tle")
+                print "Data Requests Done"
+            except IOError as e:
+                Satellite.objects.update_or_create(norad_id=norad_id, failed=True, defaults=None)
+                print e
+                print "Waiting 5 Seconds for Next Query"
+                time.sleep(5)
                 continue
             else:
                 k = 0
@@ -109,7 +108,7 @@ class Command(BaseCommand):
                 try:
                     satellite_foreign_key = Satellite.objects.update_or_create(
                         norad_id=(satellite_cat[0].get(u'NORAD_CAT_ID', None)), defaults=satellite_dict)
-                    print "Satellite "+str(norad_id)+" Created"
+                    print "Satellite " + str(norad_id) + " Created"
                 except Satellite.DoesNotExist:
                     satellite_foreign_key = None
                     print Satellite.DoesNotExist

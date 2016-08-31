@@ -3,16 +3,14 @@ from django.http import HttpResponse
 from models import Country
 from models import Satellite
 from models import OrbitalElements
-import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
-
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
 from .forms import SearchForm
+import json
 
 
 def home_page(request):
@@ -67,12 +65,6 @@ def satellite_id_old(request, id):
     return HttpResponse(orbital_element)
 
 
-def orbital_elements(request, id):
-    orbitalelements = []
-    orbitalelements.append(OrbitalElements.objects.filter(satellite_id=id).values())
-    return HttpResponse(OrbitalElements.objects.values().get(satellite_id=id))
-
-
 def country_name(request, name_id):
     info = Country.objects.filter(name_id__exact=name_id)
     data = {
@@ -101,7 +93,7 @@ def search_request(request, search):
 
 
 def satellite_id(request, id):
-    info = Satellite.objects.filter(norad_id__exact=id)
+    #info = Satellite.objects.filter(norad_id__exact=id)
     satellite = Satellite.objects.get(norad_id=id)
     try:
         orb_info = OrbitalElements.objects.values().get(satellite=satellite)
@@ -131,7 +123,7 @@ def satellite_id(request, id):
                     }
 
     data = {
-        "satellite": info,
+        "satellite": satellite,
         "orbital": orb_info
     }
 
@@ -143,3 +135,26 @@ def sat_name(request):
     print form
 
     return render(request, 'test2.html', {'form': form})
+
+
+def search(request):
+    satellite_list = Satellite.objects.all()
+    if "sat_name" in request.GET:
+        satellite_list = satellite_list.filter(sat_name__icontains=request.GET["sat_name"])
+    paginator = Paginator(satellite_list, 25)
+
+    page = request.GET.get('page')
+
+    try:
+        satellites = paginator.page(page)
+    except PageNotAnInteger:
+        satellites = paginator.page(1)
+    except EmptyPage:
+        satellites = paginator.page(paginator.num_pages)
+
+    info = Satellite.objects.values('norad_id', 'sat_name', 'launch', 'decay', 'country__name_id')
+    data = {
+        "satellite": info
+    }
+    #return render_to_response('satellites.html', data, context_instance=RequestContext(request))
+    return render(request, 'satellites.html', {'satellites': satellites})
