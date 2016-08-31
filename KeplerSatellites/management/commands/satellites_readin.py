@@ -1,12 +1,13 @@
-from django.core.management.base import BaseCommand
+import time
 from datetime import datetime
+
+from django.core.management.base import BaseCommand
+
 from KeplerSatellites.models import *
 from query import Query
-import time
 
 
 class Command(BaseCommand):
-
     def handle(self, *args, **options):
         query_object = Query()
         query_object.login()
@@ -22,35 +23,35 @@ class Command(BaseCommand):
             site_dict = {
                 'AFETR': "Air Force Eastern Test Range",
                 'AFWTR': "Air Force Western Test Range",
-                'CAS':   "Pegasus launched from Canary Islands Air Space",
-                'ERAS':  "Pegasus launched from Eastern Range Air Space",
+                'CAS': "Pegasus launched from Canary Islands Air Space",
+                'ERAS': "Pegasus launched from Eastern Range Air Space",
                 'FRGUI': "French Guiana",
                 'HGSTR': "Hamma Guira Space Track Range",
-                'JSC':	 "Jiuquan Satellite Launch Center, China",
+                'JSC': "Jiuquan Satellite Launch Center, China",
                 'KODAK': "Kodiak Island, Alaska",
                 'KSCUT': "Kagoshima Space Center University Of Tokyo",
-                'KWAJ':	 "Kwajalein",
+                'KWAJ': "Kwajalein",
                 'KYMTR': "Kapustin Yar Missile and Space Complex",
-                'NSC':	 "Naro Space Center, South Korea",
-                'OREN':	 "Orenburg, Russia",
+                'NSC': "Naro Space Center, South Korea",
+                'OREN': "Orenburg, Russia",
                 'PKMTR': "Plesetek Missile and Space Complex",
                 'SADOL': "Submarine Launch from Barents Sea, Russia",
-                'SEAL':	 "Sea Launch",
-                'SEM':	 "Semnan, Iran",
+                'SEAL': "Sea Launch",
+                'SEM': "Semnan, Iran",
                 'SNMLP': "San Marco Launch Platform",
-                'SRI':	 "Sirharikota",
-                'SVOB':	 "Svobodny, Russia",
+                'SRI': "Sirharikota",
+                'SVOB': "Svobodny, Russia",
                 'TNSTA': "Tanegashima Space Center",
-                'TSC':	 "Taiyaun Space Center, China",
+                'TSC': "Taiyaun Space Center, China",
                 'TTMTR': "Tyuratam Missile and Space Complex",
-                'UNKN':	 "Unknown",
+                'UNKN': "Unknown",
                 'WLPIS': "Wallos Island",
                 'WOMRA': "Woomera",
-                'WRAS':  "Pegasus launched from Western Range Air Space",
-                'XSC':	 "Xichang Space Center, China",
+                'WRAS': "Pegasus launched from Western Range Air Space",
+                'XSC': "Xichang Space Center, China",
                 'YAVNE': "Yavne, Israel",
-                'YUN':	 "Yunsong, DPRK",
-                None:    None,
+                'YUN': "Yunsong, DPRK",
+                None: None,
             }
 
             try:

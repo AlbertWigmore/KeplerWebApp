@@ -2,7 +2,6 @@ from django.db import models
 
 
 class OrbitalElements(models.Model):
-
     period = models.FloatField(blank=True, null=True)
     inclination = models.FloatField(blank=True, null=True)
     apogee = models.FloatField(blank=True, null=True)
@@ -27,8 +26,6 @@ class OrbitalElements(models.Model):
 
 
 class Country(models.Model):
-
-
     name_id = models.CharField(max_length=4, blank=True, null=True)
     name = models.TextField(blank=True, null=True)
     in_orbit_unassigned = models.IntegerField(blank=True, null=True)
@@ -44,7 +41,6 @@ class Country(models.Model):
 
 
 class Satellite(models.Model):
-
     norad_id = models.IntegerField(blank=True, primary_key=True)
     sat_name = models.CharField(max_length=24, blank=True, null=True)
     type = models.CharField(max_length=40, blank=True, null=True)

@@ -13,17 +13,17 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
-from views import satellite_id
-from views import country_name
+from django.conf.urls import url
+
 from views import country_count
-from views import search_request
+from views import country_name
 from views import home_page
 from views import sat_name
+from views import satellite_id
 from views import search
 
 urlpatterns = [
-    #url(r'^satellite/(?P<id>[0-9]*)/$', satellite_id),
+    # url(r'^satellite/(?P<id>[0-9]*)/$', satellite_id),
     url(r'^home/', home_page),
     url(r'^sat-name/', sat_name),
     url(r'^country/(?P<name_id>.*)/$', country_name),

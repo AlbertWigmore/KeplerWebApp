@@ -1,15 +1,10 @@
 from django.core.management.base import BaseCommand
-# import json
-# import httplib
-# from django.core.serializers.json import DjangoJSONEncoder
+
 from KeplerSatellites.models import *
-# from django.conf import settings
-# from query import spacetrack_query
 from query import Query
 
 
 class Command(BaseCommand):
-
     def handle(self, *args, **options):
         query_object = Query()
         query_object.login()

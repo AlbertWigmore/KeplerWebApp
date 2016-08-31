@@ -1,16 +1,16 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from models import Country
-from models import Satellite
-from models import OrbitalElements
+import json
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.serializers.json import DjangoJSONEncoder
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse
+from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from models import Country
+from models import OrbitalElements
+from models import Satellite
 from .forms import SearchForm
-import json
 
 
 def home_page(request):
@@ -84,7 +84,8 @@ def country_count(request):
 
 
 def search_request(request, search):
-    info = Satellite.objects.filter(sat_name__icontains=search).values('norad_id', 'sat_name', 'launch', 'decay', 'country__name_id')
+    info = Satellite.objects.filter(sat_name__icontains=search).values('norad_id', 'sat_name', 'launch', 'decay',
+                                                                       'country__name_id')
     data = {
         "satellite": info
     }
@@ -93,34 +94,34 @@ def search_request(request, search):
 
 
 def satellite_id(request, id):
-    #info = Satellite.objects.filter(norad_id__exact=id)
+    # info = Satellite.objects.filter(norad_id__exact=id)
     satellite = Satellite.objects.get(norad_id=id)
     try:
         orb_info = OrbitalElements.objects.values().get(satellite=satellite)
     except:
         orb_info = {
-                    u'satellite_id': u'N/A',
-                    'mean_motion': u'N/A',
-                    'perigee': u'N/A',
-                    'RAAN': u'N/A',
-                    'second_derivative_of_mean_motion': u'N/A',
-                    'element_set_epoch': u'N/A',
-                    'object_type': u'N/A',
-                    'period': u'N/A',
-                    u'id': u'N/A',
-                    'mean_anomaly': u'N/A',
-                    'epoch': u'N/A',
-                    'b_drag_term': u'N/A',
-                    'tle_line_1': u'N/A',
-                    'argument_of_perigee': u'N/A',
-                    'tle_line_2':u'N/A',
-                    'eccentricity': u'N/A',
-                    'epoch_microsecond': u'N/A',
-                    'rev_number_at_epoch': u'N/A',
-                    'apogee': u'N/A',
-                    'first_derivative_of_mean_motion': u'N/A',
-                    'inclination': u'N/A'
-                    }
+            u'satellite_id': u'N/A',
+            'mean_motion': u'N/A',
+            'perigee': u'N/A',
+            'RAAN': u'N/A',
+            'second_derivative_of_mean_motion': u'N/A',
+            'element_set_epoch': u'N/A',
+            'object_type': u'N/A',
+            'period': u'N/A',
+            u'id': u'N/A',
+            'mean_anomaly': u'N/A',
+            'epoch': u'N/A',
+            'b_drag_term': u'N/A',
+            'tle_line_1': u'N/A',
+            'argument_of_perigee': u'N/A',
+            'tle_line_2': u'N/A',
+            'eccentricity': u'N/A',
+            'epoch_microsecond': u'N/A',
+            'rev_number_at_epoch': u'N/A',
+            'apogee': u'N/A',
+            'first_derivative_of_mean_motion': u'N/A',
+            'inclination': u'N/A'
+        }
 
     data = {
         "satellite": satellite,
@@ -156,5 +157,5 @@ def search(request):
     data = {
         "satellite": info
     }
-    #return render_to_response('satellites.html', data, context_instance=RequestContext(request))
+    # return render_to_response('satellites.html', data, context_instance=RequestContext(request))
     return render(request, 'satellites.html', {'satellites': satellites})

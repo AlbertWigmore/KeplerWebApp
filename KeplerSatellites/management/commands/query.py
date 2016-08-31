@@ -2,9 +2,10 @@
 # from django.core.serializers.json import DjangoJSONEncoder
 # from django.conf import settings
 import json
-import requests
-from datetime import datetime, timedelta
 import time
+from datetime import datetime, timedelta
+
+import requests
 
 
 class Query:
@@ -76,8 +77,7 @@ class Query:
         self.data_acquired += len(r.text)
         if (self.data_acquired / ((datetime.now() - self.time_initial).total_seconds())) > self.max_data_rate:
             time.sleep(int((self.data_acquired / self.max_data_rate) -
-                       (datetime.now() - self.time_initial).total_seconds()))
-
+                           (datetime.now() - self.time_initial).total_seconds()))
 
         if r.status_code != 200:
             raise IOError("Invalid Server Response, Status Code: %i" % r.status_code)
