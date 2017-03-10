@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import Satellite, OrbitalElements, Country
+from .models import Satellite, OrbitalElements, Country
 
 # Register your models here.
 admin.site.register(Satellite)

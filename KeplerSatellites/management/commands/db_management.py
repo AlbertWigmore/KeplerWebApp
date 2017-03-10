@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.core.management.base import BaseCommand
 
-from keplersatellites.models import *
+from KeplerSatellites.models import *
 from query import Query
 
 

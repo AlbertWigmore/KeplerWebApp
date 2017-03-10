@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.core.management.base import BaseCommand
 
-from keplersatellites.models import *
+from KeplerSatellites.models import *
 from query import Query
 
 
@@ -63,12 +63,12 @@ class Command(BaseCommand):
             try:
                 satellite_cat = query_object.query(norad_id, "satcat")
                 satellite_tle = query_object.query(norad_id, "tle")
-                print "Data Requests Done"
+                print("Data Requests Done")
             except IOError as e:
                 Satellite.objects.update_or_create(norad_id=norad_id,
                                                    defaults={'failed': True})
-                print e
-                print "Waiting 5 Seconds for Next Query"
+                print(e)
+                print("Waiting 5 Seconds for Next Query")
                 time.sleep(5)
                 continue
             else:
@@ -150,10 +150,10 @@ class Command(BaseCommand):
                     satellite_foreign_key = Satellite.objects.update_or_create(
                         norad_id=(satellite_cat[0].get(u'NORAD_CAT_ID', None)),
                         defaults=satellite_dict)
-                    print "Satellite " + str(norad_id) + " Created"
+                    print("Satellite " + str(norad_id) + " Created")
                 except Satellite.DoesNotExist:
                     satellite_foreign_key = None
-                    print Satellite.DoesNotExist
+                    print(Satellite.DoesNotExist)
 
                 bulk_data = []
                 j = 0
@@ -221,7 +221,7 @@ class Command(BaseCommand):
                     j += 1
                 try:
                     OrbitalElements.objects.bulk_create(bulk_data)
-                    print "Orbital Elements Created"
+                    print("Orbital Elements Created")
                 except OrbitalElements.DoesNotExist:
-                    print OrbitalElements.DoesNotExist
+                    print(OrbitalElements.DoesNotExist)
         query_object.logout()

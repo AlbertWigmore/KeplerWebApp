@@ -90,8 +90,8 @@ class Query:
                            total_seconds()))
 
         if r.status_code != 200:
-            print "headers: ", r.headers
-            print r.text
+            print("headers: ", r.headers)
+            print(r.text)
             raise IOError("Invalid Server Response, Status Code: %i" %
                           r.status_code)
 

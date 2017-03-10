@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from keplersatellites.models import *
+from KeplerSatellites.models import *
 from query import Query
 
 
@@ -56,5 +56,5 @@ class Command(BaseCommand):
                     u'COUNTRY', None)), defaults=country_dict
                 )
             except Country.DoesNotExist:
-                print Country.DoesNotExist
+                print(Country.DoesNotExist)
             j += 1

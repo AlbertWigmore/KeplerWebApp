@@ -7,9 +7,9 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from models import Country
-from models import OrbitalElements
-from models import Satellite
+from .models import Country
+from .models import OrbitalElements
+from .models import Satellite
 from .forms import SearchForm
 
 
@@ -143,7 +143,7 @@ def satellite_id(request, id):
 
 def sat_name(request):
     form = SearchForm(request.GET)
-    print form
+    print(form)
 
     return render(request, 'test2.html', {'form': form})
 

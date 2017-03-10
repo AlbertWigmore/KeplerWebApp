@@ -57,7 +57,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'keplerwebapp.urls'
+ROOT_URLCONF = 'KeplerWebApp.urls'
 
 TEMPLATES = [
     {
@@ -83,6 +83,15 @@ WSGI_APPLICATION = 'KeplerWebApp.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
+    }
+}
+
+# Production settings
+'''
+DATABASES = {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Kepler',
         'USER': 'albert',
@@ -91,7 +100,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
+'''
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

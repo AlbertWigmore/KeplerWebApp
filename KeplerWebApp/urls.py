@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-import keplersatellites.urls
+import KeplerSatellites.urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api/', include(keplersatellites.urls)),
-    url(r'^', include(keplersatellites.urls)),
+    url(r'^api/', include(KeplerSatellites.urls)),
+    url(r'^', include(KeplerSatellites.urls)),
 ]

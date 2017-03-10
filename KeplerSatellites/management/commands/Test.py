@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.core.management.base import BaseCommand
 
-from keplersatellites.models import *
+from KeplerSatellites.models import *
 from query import spacetrack_query
 
 
@@ -58,13 +58,13 @@ class Command(BaseCommand):
                 "tle/NORAD_CAT_ID/" + str(norad_id) +
                 "/metadata/false/distinct/true")
 
-            print "Data Requests Done"
+            print("Data Requests Done")
 
             if satellite_cat is None or satellite_tle is None:
                 Satellite.objects.update_or_create(
                     norad_id=norad_id, failed=True
                 )
-                print "Space-Track Returned None, 10 Secs Til Next Query"
+                print("Space-Track Returned None, 10 Secs Til Next Query")
                 time.sleep(10)
                 continue
             else:
@@ -150,10 +150,10 @@ class Command(BaseCommand):
                         norad_id=(satellite_cat[0].get(
                             u'NORAD_CAT_ID', None)), defaults=satellite_dict
                     )
-                    print "Satellite " + str(norad_id) + " Created"
+                    print("Satellite " + str(norad_id) + " Created")
                 except Satellite.DoesNotExist:
                     satellite_foreign_key = None
-                    print Satellite.DoesNotExist
+                    print(Satellite.DoesNotExist)
 
                 bulk_data = []
                 j = 0
@@ -221,6 +221,6 @@ class Command(BaseCommand):
                     j += 1
                 try:
                     OrbitalElements.objects.bulk_create(bulk_data)
-                    print "Orbital Elements Created"
+                    print("Orbital Elements Created")
                 except OrbitalElements.DoesNotExist:
-                    print OrbitalElements.DoesNotExist
+                    print(OrbitalElements.DoesNotExist)
