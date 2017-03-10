@@ -24,6 +24,10 @@ try:
 except ImportError:
     pass
 
+# SECURITY WARNING: keep the secret key used in production secret!
+# This secret key is only here as an example
+SECRET_KEY = 'b^(93godjczln9v(6fc0t5xdysu0#sfmn1nazal&^$^46w5fox'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -39,7 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'keplersatellites',
+    'KeplerSatellites',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -71,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'keplerwebapp.wsgi.application'
+WSGI_APPLICATION = 'KeplerWebApp.wsgi.application'
 
 
 # Database
