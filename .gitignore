@@ -49,7 +49,7 @@ Temporary Items
 # Pycharm Config and Settings
 
 .idea
-settings.py
+localsettings.py
 db.sqlite3
 
 # Other

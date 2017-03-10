@@ -2,9 +2,10 @@
 # from django.core.serializers.json import DjangoJSONEncoder
 # from django.conf import settings
 import json
-import requests
-from datetime import datetime, timedelta
 import time
+from datetime import datetime, timedelta
+
+import requests
 
 
 class Query:
@@ -13,15 +14,20 @@ class Query:
         self.url_login = "ajaxauth/login"
         self.url_logout = "ajaxauth/logout"
         self.url_request = "basicspacedata/query/class/satcat/NORAD_CAT_ID/"
-        self.url_request_tle = "https://www.space-track.org/basicspacedata/query/class/tle/NORAD_CAT_ID/"
-        self.url_request_box_score = "https://www.space-track.org/basicspacedata/query/class/boxscore/"
+        self.url_request_tle = "https://www.space-track.org/basicspacedata/" +\
+                               "query/class/tle/NORAD_CAT_ID/"
+        self.url_request_box_score = "https://www.space-track.org/" + \
+                                     "basicspacedata/query/class/boxscore/"
         self.url_request_postfix = "/metadata/false"
-        self.url_request_postfix_tle = "/orderby/EPOCH%20desc/limit/1/metadata/false/distinct/true"
+        self.url_request_postfix_tle = "/orderby/EPOCH%20desc/limit/1/" + \
+                                       "metadata/false/distinct/true"
         self.cookie = None
-        self.headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
-        self.credentials = {'identity': "albertwigmore@live.co.uk", 'password': "ucUuGCJLZq2xa4t"}
+        self.headers = {'Content-Type': 'application/json',
+                        'Accept': 'application/json'}
+        self.credentials = {'identity': "albertwigmore@live.co.uk",
+                            'password': "ucUuGCJLZq2xa4t"}
         self.data_acquired = 0
-        self.max_data_rate = 6250 * 0.9  # 50kbps times a multiplier for headers
+        self.max_data_rate = 6250 * 0.9  # 50kbps times multiplier for headers
         self.time_initial = datetime.now()
         self.query_times = [datetime.now() - timedelta(minutes=1)] * 20
 
@@ -43,20 +49,21 @@ class Query:
 
     def query(self, norad_id, request):
         if request == "satcat":
-            url = self.url_base + self.url_request + str(norad_id) + self.url_request_postfix
+            url = self.url_base + self.url_request + str(norad_id) + \
+                self.url_request_postfix
         elif request == "tle":
-            url = self.url_base + self.url_request_tle + str(norad_id) + self.url_request_postfix_tle
+            url = self.url_base + self.url_request_tle + str(norad_id) + \
+                self.url_request_postfix_tle
         elif request == "boxscore":
             url = self.url_request_box_score
         else:
             return None
 
         # 20 request per minute API throttling requirement
-        sleep_time = 60 - (datetime.now() - self.query_times.pop(0)).total_seconds()
+        sleep_time = 60 - (datetime.now() - self.query_times.pop(0)).\
+            total_seconds()
         if sleep_time > 0:
-            print sleep_time
             time.sleep(sleep_time)
-            print "slept"
 
         try:
             r = requests.get(url, headers=self.headers, cookies=self.cookie)
@@ -74,13 +81,19 @@ class Query:
 
         # Data rate of 50kbps requirement
         self.data_acquired += len(r.text)
-        if (self.data_acquired / ((datetime.now() - self.time_initial).total_seconds())) > self.max_data_rate:
-            time.sleep(int((self.data_acquired / self.max_data_rate) -
-                       (datetime.now() - self.time_initial).total_seconds()))
+        if (self.data_acquired / ((datetime.now() -
+                                   self.time_initial).
+                                  total_seconds())) > self.max_data_rate:
 
+            time.sleep(int((self.data_acquired / self.max_data_rate) -
+                           (datetime.now() - self.time_initial).
+                           total_seconds()))
 
         if r.status_code != 200:
-            raise IOError("Invalid Server Response, Status Code: %i" % r.status_code)
+            print "headers: ", r.headers
+            print r.text
+            raise IOError("Invalid Server Response, Status Code: %i" %
+                          r.status_code)
 
         json_dict = json.loads(r.text)
 
