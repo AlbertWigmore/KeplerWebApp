@@ -73,7 +73,7 @@ def country_name(request, name_id):
     }
 
     return render_to_response(
-        'country.html', data, context_instance=RequestContext(request)
+        'country.html', data
     )
 
 
@@ -84,7 +84,7 @@ def country_count(request):
     }
 
     return render_to_response(
-        'countries.html', data, context_instance=RequestContext(request)
+        'countries.html', data
     )
 
 
@@ -99,7 +99,7 @@ def search_request(request, search):
     }
 
     return render_to_response(
-        'results.html', data, context_instance=RequestContext(request)
+        'results.html', data
     )
 
 
@@ -139,7 +139,7 @@ def satellite_id(request, id):
     }
 
     return render_to_response(
-        'satellite.html', data, context_instance=RequestContext(request)
+        'satellite.html', data
     )
 
 
@@ -174,6 +174,6 @@ def search(request):
     }
 
     # return render_to_response(
-    # 'satellites.html', data, context_instance=RequestContext(request)
+    # 'satellites.html', data, context=RequestContext(request)
     # )
     return render(request, 'satellites.html', {'satellites': satellites})
