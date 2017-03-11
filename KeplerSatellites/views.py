@@ -7,9 +7,10 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from models import Country
-from models import OrbitalElements
-from models import Satellite
+from .models import Country
+from .models import OrbitalElements
+from .models import Satellite
+
 from .forms import SearchForm
 
 
@@ -71,7 +72,9 @@ def country_name(request, name_id):
         "country": info
     }
 
-    return render_to_response('country.html', data, context_instance=RequestContext(request))
+    return render_to_response(
+        'country.html', data, context_instance=RequestContext(request)
+    )
 
 
 def country_count(request):
@@ -80,17 +83,24 @@ def country_count(request):
         "country": info
     }
 
-    return render_to_response('countries.html', data, context_instance=RequestContext(request))
+    return render_to_response(
+        'countries.html', data, context_instance=RequestContext(request)
+    )
 
 
 def search_request(request, search):
-    info = Satellite.objects.filter(sat_name__icontains=search).values('norad_id', 'sat_name', 'launch', 'decay',
-                                                                       'country__name_id')
+
+    info = Satellite.objects.filter(
+        sat_name__icontains=search).values('norad_id', 'sat_name', 'launch',
+                                           'decay', 'country__name_id'
+                                           )
     data = {
         "satellite": info
     }
 
-    return render_to_response('results.html', data, context_instance=RequestContext(request))
+    return render_to_response(
+        'results.html', data, context_instance=RequestContext(request)
+    )
 
 
 def satellite_id(request, id):
@@ -98,7 +108,7 @@ def satellite_id(request, id):
     satellite = Satellite.objects.get(norad_id=id)
     try:
         orb_info = OrbitalElements.objects.values().get(satellite=satellite)
-    except:
+    except OrbitalElements.DoesNotExist:
         orb_info = {
             u'satellite_id': u'N/A',
             'mean_motion': u'N/A',
@@ -128,12 +138,14 @@ def satellite_id(request, id):
         "orbital": orb_info
     }
 
-    return render_to_response('satellite.html', data, context_instance=RequestContext(request))
+    return render_to_response(
+        'satellite.html', data, context_instance=RequestContext(request)
+    )
 
 
 def sat_name(request):
     form = SearchForm(request.GET)
-    print form
+    print(form)
 
     return render(request, 'test2.html', {'form': form})
 
@@ -141,7 +153,9 @@ def sat_name(request):
 def search(request):
     satellite_list = Satellite.objects.all()
     if "sat_name" in request.GET:
-        satellite_list = satellite_list.filter(sat_name__icontains=request.GET["sat_name"])
+        satellite_list = satellite_list.filter(
+            sat_name__icontains=request.GET["sat_name"]
+        )
     paginator = Paginator(satellite_list, 25)
 
     page = request.GET.get('page')
@@ -153,9 +167,13 @@ def search(request):
     except EmptyPage:
         satellites = paginator.page(paginator.num_pages)
 
-    info = Satellite.objects.values('norad_id', 'sat_name', 'launch', 'decay', 'country__name_id')
+    info = Satellite.objects.values('norad_id', 'sat_name', 'launch', 'decay',
+                                    'country__name_id')
     data = {
         "satellite": info
     }
-    # return render_to_response('satellites.html', data, context_instance=RequestContext(request))
+
+    # return render_to_response(
+    # 'satellites.html', data, context_instance=RequestContext(request)
+    # )
     return render(request, 'satellites.html', {'satellites': satellites})

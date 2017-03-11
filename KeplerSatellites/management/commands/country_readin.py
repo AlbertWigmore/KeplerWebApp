@@ -13,22 +13,48 @@ class Command(BaseCommand):
         j = 0
         for x in boxscore:
             country_dict = {
-                'name': (boxscore[j].get(u'COUNTRY', None)),
-                'name_id': (boxscore[j].get(u'SPADOC_CD', None)),
-                'in_orbit_unassigned': (boxscore[j].get(u'ORBITAL_UNASSIGNED', None)),
-                'in_orbit_rocket': (boxscore[j].get(u'ORBITAL_ROCKET_BODY_COUNT', None)),
-                'in_orbit_payload': (boxscore[j].get(u'ORBITAL_PAYLOAD_COUNT', None)),
-                'in_orbit_debris': (boxscore[j].get(u'ORBITAL_DEBRIS_COUNT', None)),
-                'in_orbit_total': (boxscore[j].get(u'ORBITAL_TOTAL_COUNT', None)),
-                'decayed_rocket': (boxscore[j].get(u'DECAYED_ROCKET_BODY_COUNT', None)),
-                'decayed_payload': (boxscore[j].get(u'DECAYED_PAYLOAD_COUNT', None)),
-                'decayed_debris': (boxscore[j].get(u'DECAYED_DEBRIS_COUNT', None)),
-                'decayed_total': (boxscore[j].get(u'DECAYED_TOTAL_COUNT', None)),
-                'total': int(float((boxscore[j].get(u'DECAYED_TOTAL_COUNT', None))) +
-                             float((boxscore[j].get(u'ORBITAL_TOTAL_COUNT', None))))}
+                'name': (boxscore[j].get(
+                    u'COUNTRY', None)
+                ),
+                'name_id': (boxscore[j].get(
+                    u'SPADOC_CD', None)
+                ),
+                'in_orbit_unassigned': (boxscore[j].get(
+                    u'ORBITAL_UNASSIGNED', None)
+                ),
+                'in_orbit_rocket': (boxscore[j].get(
+                    u'ORBITAL_ROCKET_BODY_COUNT', None)
+                ),
+                'in_orbit_payload': (boxscore[j].get(
+                    u'ORBITAL_PAYLOAD_COUNT', None)
+                ),
+                'in_orbit_debris': (boxscore[j].get(
+                    u'ORBITAL_DEBRIS_COUNT', None)
+                ),
+                'in_orbit_total': (boxscore[j].get(
+                    u'ORBITAL_TOTAL_COUNT', None)
+                ),
+                'decayed_rocket': (boxscore[j].get(
+                    u'DECAYED_ROCKET_BODY_COUNT', None)
+                ),
+                'decayed_payload': (boxscore[j].get(
+                    u'DECAYED_PAYLOAD_COUNT', None)
+                ),
+                'decayed_debris': (boxscore[j].get(
+                    u'DECAYED_DEBRIS_COUNT', None)
+                ),
+                'decayed_total': (boxscore[j].get(
+                    u'DECAYED_TOTAL_COUNT', None)
+                ),
+                'total': int(float((boxscore[j].get(u'DECAYED_TOTAL_COUNT',
+                                                    None))) +
+                             float((boxscore[j].get(u'ORBITAL_TOTAL_COUNT',
+                                                    None))))}
 
             try:
-                Country.objects.update_or_create(name=(boxscore[j].get(u'COUNTRY', None)), defaults=country_dict)
+                Country.objects.update_or_create(name=(boxscore[j].get(
+                    u'COUNTRY', None)), defaults=country_dict
+                )
             except Country.DoesNotExist:
-                print Country.DoesNotExist
+                print(Country.DoesNotExist)
             j += 1

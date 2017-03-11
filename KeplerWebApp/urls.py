@@ -22,4 +22,3 @@ urlpatterns = [
     url(r'^api/', include(KeplerSatellites.urls)),
     url(r'^', include(KeplerSatellites.urls)),
 ]
-
