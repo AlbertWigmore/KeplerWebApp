@@ -14,13 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import url
-
-from .views import country_count
-from .views import country_name
-from .views import home_page
-from .views import sat_name
-from .views import satellite_id
-from .views import search
+from .views import country_count, country_name, home_page, sat_name, \
+    satellite_id, search
 
 urlpatterns = [
     # url(r'^satellite/(?P<id>[0-9]*)/$', satellite_id),
