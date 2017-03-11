@@ -3,9 +3,8 @@
 # from django.conf import settings
 import json
 import time
-from datetime import datetime, timedelta
-
 import requests
+from datetime import datetime, timedelta
 
 
 class Query:

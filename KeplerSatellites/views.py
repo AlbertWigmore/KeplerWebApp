@@ -1,16 +1,9 @@
 import json
-
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-
-from .models import Country
-from .models import OrbitalElements
-from .models import Satellite
-
+from django.shortcuts import render, render_to_response
+from .models import Country, OrbitalElements, Satellite
 from .forms import SearchForm
 
 
