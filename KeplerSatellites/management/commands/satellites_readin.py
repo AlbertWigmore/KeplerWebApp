@@ -7,11 +7,6 @@ from KeplerSatellites.models import *
 from query import Query
 
 
-class Satellite():
-    def __init__(self, query):
-        pass
-
-
 class Command(BaseCommand):
     def handle(self, *args, **options):
         query_object = Query()

@@ -81,6 +81,7 @@ class Query:
 
         # Data rate of 50kbps requirement
         self.data_acquired += len(r.text)
+
         if (self.data_acquired / ((datetime.now() -
                                    self.time_initial).
                                   total_seconds())) > self.max_data_rate:

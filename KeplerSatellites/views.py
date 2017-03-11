@@ -10,6 +10,7 @@ from django.template import RequestContext
 from .models import Country
 from .models import OrbitalElements
 from .models import Satellite
+
 from .forms import SearchForm
 
 
@@ -88,6 +89,7 @@ def country_count(request):
 
 
 def search_request(request, search):
+
     info = Satellite.objects.filter(
         sat_name__icontains=search).values('norad_id', 'sat_name', 'launch',
                                            'decay', 'country__name_id'
@@ -170,6 +172,7 @@ def search(request):
     data = {
         "satellite": info
     }
+
     # return render_to_response(
     # 'satellites.html', data, context_instance=RequestContext(request)
     # )
